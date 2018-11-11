@@ -170,12 +170,12 @@ namespace MVCTemplate.Controllers
         public IActionResult Top5Picks()
         {
 
-            List<Equity> equities = dbContext.Equities.Where(c => ((c.close - c.week52Low) / (c.week52High - c.week52Low) > 0.82f))
-                                                         .OrderByDescending(c => (c.close - c.week52Low) / (c.week52High - c.week52Low))
+            List<Equity> equities = dbContext.Equities.Where(c => ((1 + (c.close - c.week52Low)) / ((c.week52High - c.week52Low) + 1) > 0.82f))
+                                                         .OrderByDescending(c => ((1 + (c.close - c.week52Low)) / ((c.week52High - c.week52Low) + 1) > 0.82f))
                                                          .Take(5)
                                                          .ToList();
 
-            return View("StockPicks", equities);
+            return View("Top5Picks", equities);
         }
     }
 }

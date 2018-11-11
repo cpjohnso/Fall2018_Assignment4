@@ -57,7 +57,7 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
             string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/batch?types=quote,chart&range=1y";
 
             string charts = "";
-            List<Equity> Equities = new List<Equity>();
+            List<Equity> equities = new List<Equity>();
             httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
             HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)
@@ -67,15 +67,15 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
             if (!charts.Equals(""))
             {
                 ChartRoot root = JsonConvert.DeserializeObject<ChartRoot>(charts, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                Equities = root.chart.ToList();
+                equities = root.chart.ToList();
             }
             //make sure to add the symbol the chart
-            foreach (Equity Equity in Equities)
+            foreach (Equity Equity in equities)
             {
                 Equity.symbol = symbol;
             }
 
-            return Equities;
+            return equities;
         }
     }
 }
